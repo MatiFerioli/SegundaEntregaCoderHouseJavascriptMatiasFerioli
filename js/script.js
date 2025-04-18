@@ -11,7 +11,7 @@ const menu = [
     nombre: "Milanesa",
     precio: 14000,
     imagen: "/assets/milanesa.jfif",
-    descripcion: "Milanesa de carne con guarnición",
+    descripcion: "Sandwich de milanesa de carne o pollo",
   },
   {
     id: 3,
@@ -25,14 +25,14 @@ const menu = [
     nombre: "Lomito",
     precio: 15000,
     imagen: "assets/lomito.jfif",
-    descripcion: "Sándwich de lomo completo con lechuga, tomate y mayonesa",
+    descripcion: "Sandwich de lomo completo con lechuga, tomate y mayonesa",
   },
   {
     id: 5,
     nombre: "Choripan",
     precio: 10000,
     imagen: "assets/choripan.jfif",
-    descripcion: "Choripán con chimichurri",
+    descripcion: "Choripan con chimichurri",
   },
   {
     id: 6,
@@ -65,14 +65,13 @@ const menu = [
   {
     id: 10,
     nombre: "Cerveza",
-    precio: 4500,
+    precio: 5500,
     imagen: "assets/cerveza.jfif",
     descripcion: "Cerveza artesanal 1L",
   },
 ];
 
 // Carrito de compras
-// Verifico si hay algo guardado en localStorage
 let carrito = [];
 if (localStorage.getItem("carrito")) {
   carrito = JSON.parse(localStorage.getItem("carrito"));
@@ -101,7 +100,6 @@ const newOrderBtn = document.getElementById("new-order-btn");
 
 // Función para mostrar los productos del menú en la página
 function mostrarMenu() {
-  // Limpio el contenedor antes de agregar los productos
   menuItemsContainer.innerHTML = "";
 
   // Recorro el array de productos y creo un elemento para cada uno
@@ -120,15 +118,11 @@ function mostrarMenu() {
                 <button class="btn-primary add-to-cart-btn" data-id="${menu[i].id}">Agregar al Pedido</button>
             </div>
         `;
-
-    // Agrego el producto al contenedor
     menuItemsContainer.appendChild(menuItem);
   }
 
-  // Obtengo todos los botones de "Agregar al Pedido"
   const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
 
-  // Agrego el evento click a cada botón
   for (let i = 0; i < addToCartButtons.length; i++) {
     addToCartButtons[i].addEventListener("click", agregarAlCarrito);
   }
@@ -136,10 +130,7 @@ function mostrarMenu() {
 
 // Función para agregar un producto al carrito
 function agregarAlCarrito(event) {
-  // Obtener ID del producto
   const productoId = Number.parseInt(event.target.getAttribute("data-id"));
-
-  // Busco el producto en el menú
   let productoSeleccionado = null;
   for (let i = 0; i < menu.length; i++) {
     if (menu[i].id === productoId) {
@@ -148,7 +139,7 @@ function agregarAlCarrito(event) {
     }
   }
 
-  // Verifico si el producto ya está en el carrito
+  // Verificación del producto si ya está en el carrito
   let productoEncontrado = false;
   for (let i = 0; i < carrito.length; i++) {
     if (carrito[i].id === productoId) {
@@ -158,7 +149,7 @@ function agregarAlCarrito(event) {
     }
   }
 
-  // Si no está en el carrito, lo agrego
+  // Si no está en el carrito, agregamos el producto
   if (!productoEncontrado) {
     carrito.push({
       id: productoSeleccionado.id,
@@ -171,13 +162,11 @@ function agregarAlCarrito(event) {
   // Guardo el carrito en localStorage
   localStorage.setItem("carrito", JSON.stringify(carrito));
 
-  // Actualizo la visualización del carrito
   actualizarCarrito();
 }
 
 // Función para actualizar la visualización del carrito
 function actualizarCarrito() {
-  // Limpio contenido del carrito
   cartItemsContainer.innerHTML = "";
 
   // Si el carrito está vacío, muestro un mensaje
@@ -196,47 +185,40 @@ function actualizarCarrito() {
       cartItem.className = "cart-item";
 
       // Agrego el contenido HTML del producto
-      cartItem.innerHTML = `
+    cartItem.innerHTML = `
                 <div class="cart-item-info">
                     <h4>${carrito[i].nombre}</h4>
                     <div class="cart-item-quantity">
-                        <button class="quantity-btn decrease-btn" data-id="${
-                          carrito[i].id
-                        }">-</button>
+                        <button class="quantity-btn decrease-btn" data-id="${carrito[i].id}">-</button>
                         <span>${carrito[i].cantidad}</span>
-                        <button class="quantity-btn increase-btn" data-id="${
-                          carrito[i].id
-                        }">+</button>
+                        <button class="quantity-btn increase-btn" data-id="${carrito[i].id}">+</button>
                     </div>
                 </div>
                 <div class="cart-item-actions">
                     <p>$${carrito[i].precio * carrito[i].cantidad}</p>
-                    <button class="remove-btn" data-id="${
-                      carrito[i].id
-                    }">Eliminar</button>
+                    <button class="remove-btn" data-id="${carrito[i].id}">Eliminar</button>
                 </div>
             `;
-
-      // Agrego el producto al contenedor del carrito
+     // Agrego el producto al contenedor del carrito
       cartItemsContainer.appendChild(cartItem);
     }
 
-    // Obtengo todos los botones de disminuir, aumentar y eliminar
+    // Todos los botones de disminuir, aumentar y eliminar
     const decreaseBtns = document.querySelectorAll(".decrease-btn");
     const increaseBtns = document.querySelectorAll(".increase-btn");
     const removeBtns = document.querySelectorAll(".remove-btn");
 
-    // Agrego eventos a los botones de disminuir
+    // Botones de disminuir
     for (let i = 0; i < decreaseBtns.length; i++) {
       decreaseBtns[i].addEventListener("click", disminuirCantidad);
     }
 
-    // Agrego eventos a los botones de aumentar
+    // Botones de aumentar
     for (let i = 0; i < increaseBtns.length; i++) {
       increaseBtns[i].addEventListener("click", aumentarCantidad);
     }
 
-    // Agrego eventos a los botones de eliminar
+    // Botones de eliminar
     for (let i = 0; i < removeBtns.length; i++) {
       removeBtns[i].addEventListener("click", eliminarDelCarrito);
     }
@@ -246,19 +228,15 @@ function actualizarCarrito() {
   actualizarContadorYTotal();
 }
 
-// Función para disminuir la cantidad de un producto
+// Disminución de la cantidad de un producto
 function disminuirCantidad(event) {
-  // Obtengo el ID del producto
   const productoId = Number.parseInt(event.target.getAttribute("data-id"));
 
-  // Busco el producto en el carrito
   for (let i = 0; i < carrito.length; i++) {
     if (carrito[i].id === productoId) {
-      // Si la cantidad es mayor a 1, la disminuyo
       if (carrito[i].cantidad > 1) {
         carrito[i].cantidad = carrito[i].cantidad - 1;
       } else {
-        // Si la cantidad es 1, elimino el producto del carrito
         carrito.splice(i, 1);
       }
       break;
@@ -268,13 +246,12 @@ function disminuirCantidad(event) {
   // Guardo el carrito en localStorage
   localStorage.setItem("carrito", JSON.stringify(carrito));
 
-  // Actualizo la visualización del carrito
   actualizarCarrito();
 }
 
 // Función para aumentar la cantidad de un producto
 function aumentarCantidad(event) {
-  //ID del producto
+  // ID del producto
   const productoId = Number.parseInt(event.target.getAttribute("data-id"));
 
   // Busco el producto en el carrito
@@ -309,7 +286,6 @@ function eliminarDelCarrito(event) {
   // Guardo el carrito en localStorage
   localStorage.setItem("carrito", JSON.stringify(carrito));
 
-  // Actualizo la visualización del carrito
   actualizarCarrito();
 }
 
@@ -320,7 +296,7 @@ function actualizarContadorYTotal() {
     cantidadTotal = cantidadTotal + carrito[i].cantidad;
   }
 
-  // Calculo el precio
+  // Calculos del precio
   let precioTotal = 0;
   for (let i = 0; i < carrito.length; i++) {
     precioTotal = precioTotal + carrito[i].precio * carrito[i].cantidad;
@@ -336,38 +312,32 @@ function actualizarContadorYTotal() {
 function vaciarCarrito() {
   carrito = [];
 
-  // Guardo el carro vacío en localStorage
+// Guardo el carro vacío en localStorage
   localStorage.setItem("carrito", JSON.stringify(carrito));
 
-  // Actualizo la visualización del carrito
   actualizarCarrito();
 }
 
 // Función para mostrar la sección de pago
 function mostrarPago() {
-  // Oculto la sección del carrito
   cartSection.classList.add("hidden");
 
-  // Muestro la sección de pago
   paymentSection.classList.remove("hidden");
 
-  // Calculo el total a pagar
   let total = 0;
   for (let i = 0; i < carrito.length; i++) {
     total = total + carrito[i].precio * carrito[i].cantidad;
   }
 
-  // Establezco el mínimo del input de pago al total del carrito
+  // Mínimo del input de pago al total del carrito
   customerPaymentInput.min = total;
   customerPaymentInput.value = total;
 }
 
 // Función para cancelar el pago y volver al carrito
 function cancelarPago() {
-  // Oculto la sección de pago
   paymentSection.classList.add("hidden");
 
-  // Muestro la sección del carrito
   cartSection.classList.remove("hidden");
 }
 
@@ -375,7 +345,7 @@ function cancelarPago() {
 function procesarPago(event) {
   event.preventDefault();
 
-  // Calculo el total a pagar
+  // Calculo total a pagar
   let total = 0;
   for (let i = 0; i < carrito.length; i++) {
     total = total + carrito[i].precio * carrito[i].cantidad;
@@ -384,7 +354,7 @@ function procesarPago(event) {
   // Obtengo el monto ingresado por el usuario
   const pago = Number.parseFloat(customerPaymentInput.value);
 
-  // Verifico que el pago sea suficiente
+  // Verifico que el pago sea correcto
   if (pago < total) {
     alert("El monto ingresado es menor al total a pagar");
     return;
@@ -398,29 +368,28 @@ function procesarPago(event) {
   receiptPaymentElement.textContent = pago;
   receiptChangeElement.textContent = vuelto;
 
-  // Oculto la sección de pago
+  // Oculto sección pago
   paymentSection.classList.add("hidden");
 
-  // Muestro la sección del recibo
+  // Muestro recibo
   receiptSection.classList.remove("hidden");
 
-  // Vacío el carrito después de completar la compra
   vaciarCarrito();
 }
 
-// Función para iniciar un nuevo pedido
+// Iniciar nuevo pedido
 function nuevoPedido() {
    receiptSection.classList.add("hidden");
    cartSection.classList.remove("hidden");
 }
 
-// Función para inicializar la aplicación
+// Inicio app
 function inicializarApp() {
   mostrarMenu();
 
   actualizarCarrito();
 
-  // Agrego eventos a los botones principales
+  // Eventos botones principales
   checkoutBtn.addEventListener("click", mostrarPago);
   clearCartBtn.addEventListener("click", vaciarCarrito);
   cancelPaymentBtn.addEventListener("click", cancelarPago);
@@ -428,5 +397,4 @@ function inicializarApp() {
   newOrderBtn.addEventListener("click", nuevoPedido);
 }
 
-// Inicio la aplicación
 inicializarApp();

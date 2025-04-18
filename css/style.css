@@ -36,7 +36,7 @@ main {
   display: none;
 }
 
-/* Estilos menú */
+/* Menú */
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -78,7 +78,7 @@ main {
   margin-bottom: 1rem;
 }
 
-/* Estilos carrito */
+/* Carrito */
 .cart-icon {
   position: relative;
   cursor: pointer;
@@ -135,7 +135,7 @@ main {
   color: #ff6b35;
 }
 
-/* Estilos botones */
+/* Botones */
 .btn-primary,
 .btn-secondary {
   padding: 0.8rem 1.5rem;
